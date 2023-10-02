@@ -20,7 +20,7 @@ class SensorOutput(Base):
     temperature: Mapped[float] = mapped_column(Double)
     humidity: Mapped[float] = mapped_column(Double)
     dateMeasured: Mapped[datetime.date]
-    hourMeasured: Mapped[int] = mapped_column(Integer(128))
+    hourMeasured: Mapped[int]
 
     def __repr__(self) -> str:
         return f"SensorOutput(id={self.id!r}, sensorid={self.sensorid!r}, temperature={self.temperature!r}, \
@@ -30,8 +30,8 @@ class SensorOutput(Base):
 class Sensor(Base):
     __tablename__ = "sensors"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    description: Mapped[str]
+    name: Mapped[str] = mapped_column(String(64))
+    description: Mapped[str] = mapped_column(String(128))
 
     def __repr__(self) -> str:
         return f"Sensor(id={self.id!r}, name={self.name!r}, description={self.description!r})"

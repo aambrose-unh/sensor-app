@@ -6,6 +6,9 @@ authors = ["aambrose-unh <aambrose.unh@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "sensor_app_db", from = "src" }]
 
+[tool.poetry.scripts]
+create-tables-app = "sensor_app_db.create_tables:app"
+
 [tool.poetry.dependencies]
 python = "^3.8.1"
 sqlalchemy = "^2.0.21"

@@ -58,6 +58,7 @@ def saveToDatabase(temperature, humidity):
         v = (temperature, humidity, str(currentDate), minutes)
         logger.info(f"Values: {v}")
         con.execute(q, v)
+        con.commit()
 
         print("Saved temperature")
         return "true"
