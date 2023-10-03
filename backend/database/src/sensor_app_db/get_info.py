@@ -2,6 +2,9 @@
 import sys
 import random
 
+# import board
+# import adafruit_dht
+
 import os
 import time
 import pymysql as mdb
@@ -73,6 +76,31 @@ def saveToDatabase(temperature, humidity):
 def readInfo():
     temperature_f = random.randint(0, 100)
     humidity = random.randint(0, 100)
+
+    # num_retries = 15
+    # while num_retries > 0:
+    #     print(f"Number of retries remaining: {num_retries}")
+    #     try:
+    #         # Print the values to the serial port
+    #         temperature_c = sensor.temperature
+    #         temperature_f = temperature_c * (9 / 5) + 32
+    #         humidity = sensor.humidity
+    #         print(
+    #             "Temp: {:.1f} F / {:.1f} C    Humidity: {}% ".format(
+    #                 temperature_f, temperature_c, humidity
+    #             )
+    #         )
+    #         break  # do not repeat if successful
+
+    #     except RuntimeError as error:
+    #         # Errors happen fairly often, DHT's are hard to read, just keep going
+    #         print(error.args[0])
+    #         time.sleep(2.0)
+    #         num_retries -= 1
+
+    #     except Exception as error:
+    #         sensor.exit()
+    #         raise error
 
     print("Temperature: %.1f C" % temperature_f)
     print("Humidity:    %s %%" % humidity)

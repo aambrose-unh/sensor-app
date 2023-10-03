@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "sensor-app-api"
+version = "0.1.0"
+description = "API for the sensor app"
+authors = ["aambrose-unh <aambrose.unh@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "sensor_app_api", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+fastapi = "^0.103.2"
+pydantic = "^2.4.2"
+sensor-app-db = {path = "../database", develop = true}
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+black = "^23.9.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
