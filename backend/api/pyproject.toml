@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{ include = "sensor_app_api", from = "src" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8.1,<4.0"
+python = ">=3.10.1,<4.0"
 fastapi = "^0.103.2"
 pydantic = "^2.4.2"
 sensor-app-db-helper = {path = "../db-helper", develop = true}
