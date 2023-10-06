@@ -4,8 +4,9 @@ import datetime
 
 class SensorOutputBase(BaseModel):
     value: float
-    dateMeasured: datetime.date
-    hourMeasured: int
+    sensor_id: int
+    date_measured: datetime.date
+    hour_measured: int
 
 
 class SensorOutputCreate(SensorOutputBase):
@@ -14,7 +15,6 @@ class SensorOutputCreate(SensorOutputBase):
 
 class SensorOutput(SensorOutputBase):
     id: int
-    sensor_id: int
 
     class Config:
         orm_mode = True

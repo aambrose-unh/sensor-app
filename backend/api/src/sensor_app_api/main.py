@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
+import datetime
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -81,7 +82,7 @@ def get_sensor_outputs_by_measurement_type_id(
     return db_sensor_outputs
 
 
-@app.post("measurement-type/create", response_model=schemas.MeasurementType)
+@app.post("/measurement-type/create", response_model=schemas.MeasurementType)
 def create_measurement_type(
     measurement_type: schemas.MeasurementTypeCreate, db: Session = Depends(get_db)
 ):
@@ -111,7 +112,7 @@ def get_sensors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return db_sensors
 
 
-@app.get("outputs/", response_model=list[schemas.SensorOutput])
+@app.get("/outputs/", response_model=list[schemas.SensorOutput])
 def get_outputs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_outputs = crud.get_outputs(db, skip=skip, limit=limit)
     return db_outputs
