@@ -7,6 +7,19 @@ import datetime
 from .database import Base
 
 
+class MeasurementType(Base):
+    __tablename__ = "measurement_type"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(64))
+    description: Mapped[str] = mapped_column(String(128))
+
+    sensors = relationship("Sensor", back_populates="measurement_types")
+
+    def __repr__(self) -> str:
+        return f"MeasurementType(id={self.id!r}, name={self.name!r},\
+              description={self.description!r})"
+
+
 class Sensor(Base):
     __tablename__ = "sensors"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -36,16 +49,3 @@ class SensorOutput(Base):
         return f"SensorOutput(id={self.id!r}, sensorid={self.sensorid!r}, \
                 value={self.value!r}, \
                 date_measured={self.date_measured!r}, hour_measured={self.hour_measured!r})"
-
-
-class MeasurementType(Base):
-    __tablename__ = "measurement_type"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(64))
-    description: Mapped[str] = mapped_column(String(128))
-
-    sensors = relationship("Sensor", back_populates="measurement_types")
-
-    def __repr__(self) -> str:
-        return f"MeasurementType(id={self.id!r}, name={self.name!r},\
-              description={self.description!r})"
