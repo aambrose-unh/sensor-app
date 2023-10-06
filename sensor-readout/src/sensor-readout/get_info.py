@@ -10,9 +10,9 @@ import time
 import pymysql as mdb
 import pymysql.cursors
 import datetime
-from sqlalchemy import create_engine, text
-from sqlalchemy import insert
-from sensor_app_db.models import SensorOutput
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sensor_app_db_helper.models import SensorOutput
 
 
 import logging
@@ -46,14 +46,7 @@ def saveToDatabase(temperature, humidity):
     midnight = datetime.datetime.combine(now.date(), datetime.time())
     minutes = ((now - midnight).seconds) / 60  # minutes after midnight, use datead$
 
-    logger.info("Create db connection")
-    # with engine.connect() as con:
-    # cur = con.cursor()
-    # q = "INSERT INTO temperatures (temperature,humidity, dateMeasured, hourMeasured) VALUES (%s, %s, %s, %s)"
-    # logger.info(f"Inserting record {q}")
-    # v = (temperature, humidity, str(currentDate), minutes)
-    # logger.info(f"Values: {v}")
-    # con.execute(q, v)
+    logger.info("Create SensorOutput instance")
     new_entry = SensorOutput(
         sensorid=1,
         temperature=temperature,
@@ -62,8 +55,7 @@ def saveToDatabase(temperature, humidity):
         hourMeasured=minutes,
     )
 
-    from sqlalchemy.orm import sessionmaker
-
+    logger.info("Create db connection")
     Session = sessionmaker(bind=engine)
     session = Session()
     session.add(new_entry)

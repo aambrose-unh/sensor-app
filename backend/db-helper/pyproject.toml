@@ -1,20 +1,22 @@
 [tool.poetry]
-name = "sensor-readout"
+name = "sensor-app-db-helper"
 version = "0.1.0"
 description = ""
 authors = ["aambrose-unh <aambrose.unh@gmail.com>"]
 readme = "README.md"
-packages = [{ include = "sensor_readout", from = "src" }]
+packages = [{ include = "sensor_app_db_helper", from = "src" }]
+
+[tool.poetry.scripts]
+create-tables-app = "sensor_app_db_helper.create_tables:app"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
 sqlalchemy = "^2.0.21"
 pymysql = "^1.1.0"
-mysql-connector-python = "^8.1.0"
+# mysql-connector-python = "^8.1.0"
+typer = "^0.9.0"
 # adafruit_dht = "1.4.0"
 # board = "1.0"
-sensor-app-db-helper = {path = "../backend/db-helper", develop = true}
-
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.1.0"
