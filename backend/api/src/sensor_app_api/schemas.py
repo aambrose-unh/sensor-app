@@ -1,12 +1,17 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 import datetime
 
 
 class SensorOutputBase(BaseModel):
     value: float
     sensor_id: int
+    measurement_type_id: int
     date_measured: datetime.date
     hour_measured: int
+
+    @field_serializer("date_measured")
+    def serialize_dt(self, date_measured: datetime.date, _info):
+        return str(date_measured)
 
 
 class SensorOutputCreate(SensorOutputBase):

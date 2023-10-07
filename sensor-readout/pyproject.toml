@@ -7,13 +7,14 @@ readme = "README.md"
 packages = [{ include = "sensor_readout", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = ">=3.10.1,<4.0"
 sqlalchemy = "^2.0.21"
 pymysql = "^1.1.0"
 mysql-connector-python = "^8.1.0"
 # adafruit_dht = "1.4.0"
 # board = "1.0"
-sensor-app-db-helper = {path = "../backend/db-helper", develop = true}
+sensor-app-api = {path = "../backend/api", develop = true}
+requests = "^2.31.0"
 
 
 [tool.poetry.group.dev.dependencies]

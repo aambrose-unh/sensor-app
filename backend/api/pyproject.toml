@@ -10,7 +10,6 @@ packages = [{ include = "sensor_app_api", from = "src" }]
 python = ">=3.10.1,<4.0"
 fastapi = "^0.103.2"
 pydantic = "^2.4.2"
-sensor-app-db-helper = {path = "../db-helper", develop = true}
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
 
 

@@ -14,6 +14,7 @@ class MeasurementType(Base):
     description: Mapped[str] = mapped_column(String(128))
 
     sensors = relationship("Sensor", back_populates="measurement_types")
+    outputs = relationship("SensorOutput", back_populates="measurement_types")
 
     def __repr__(self) -> str:
         return f"MeasurementType(id={self.id!r}, name={self.name!r},\
@@ -42,8 +43,10 @@ class SensorOutput(Base):
     date_measured: Mapped[datetime.date]
     hour_measured: Mapped[int]
     sensor_id: Mapped[int] = mapped_column(ForeignKey("sensors.id"))
+    measurement_type_id: Mapped[int] = mapped_column(ForeignKey("measurement_type.id"))
 
     sensor = relationship("Sensor", back_populates="outputs")
+    measurement_type = relationship("MeasurementType", back_populates="outputs")
 
     def __repr__(self) -> str:
         return f"SensorOutput(id={self.id!r}, sensorid={self.sensorid!r}, \

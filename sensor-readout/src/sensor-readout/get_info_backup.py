@@ -7,9 +7,13 @@ import random
 
 import os
 import time
+import pymysql as mdb
+import pymysql.cursors
 import datetime
-import requests
-from sensor_app_api.schemas import SensorOutputCreate
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sensor_app_db_helper.models import SensorOutput
+
 
 import logging
 
@@ -26,50 +30,39 @@ logger.addHandler(c_handler)
 
 logger.info("Test logger")
 
-# databaseUsername = os.getenv("DB_USER")
-# databasePassword = os.getenv("DB_PASSWD")
-# databaseName = "sensor_db"
-api_endpoint = os.getenv("API_ENDPOINT", "localhost:8000")
-# api_key = os.getenv("API_KEY")
+databaseUsername = os.getenv("DB_USER")
+databasePassword = os.getenv("DB_PASSWD")
+databaseName = "sensor_db"  # do not change unless you named the Wordpress database with some other name
 
 
 def saveToDatabase(temperature, humidity):
     logger.info("Saving to database")
 
-    # connection_uri = f"mysql+pymysql://{databaseUsername}:{databasePassword}@localhost/{databaseName}"
-    # engine = create_engine(connection_uri, echo=True)
-    current_date = datetime.datetime.now().date()
+    connection_uri = f"mysql+pymysql://{databaseUsername}:{databasePassword}@localhost/{databaseName}"
+    engine = create_engine(connection_uri, echo=True)
+    currentDate = datetime.datetime.now().date()
 
     now = datetime.datetime.now()
     midnight = datetime.datetime.combine(now.date(), datetime.time())
-    minutes = int(
-        ((now - midnight).seconds) / 60
-    )  # minutes after midnight, use datead$
+    minutes = ((now - midnight).seconds) / 60  # minutes after midnight, use datead$
 
     logger.info("Create SensorOutput instance")
-    new_temp_entry = SensorOutputCreate(
-        sensor_id=2,
-        value=temperature,
-        date_measured=str(current_date),
-        hour_measured=minutes,
+    new_entry = SensorOutput(
+        sensorid=1,
+        temperature=temperature,
+        humidity=humidity,
+        dateMeasured=str(currentDate),
+        hourMeasured=minutes,
     )
 
-    new_humidity_entry = SensorOutputCreate(
-        sensor_id=2,
-        value=humidity,
-        date_measured=str(current_date),
-        hour_measured=minutes,
-    )
+    logger.info("Create db connection")
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.add(new_entry)
+    session.commit()
 
-    logger.info("Save temp output to database")
-    api_url = f"http://{api_endpoint}/sensor/create/output"
-    response = requests.post(api_url, json=new_temp_entry.model_dump())
-    logger.info(response.text)
-    logger.info("Save humidity output to database")
-    response = requests.post(api_url, json=new_humidity_entry.model_dump())
-    logger.info(response.text)
-
-    logger.info("Saved temperature")
+    print("Saved temperature")
+    return "true"
 
 
 def readInfo():
