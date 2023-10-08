@@ -14,7 +14,10 @@ class MeasurementType(Base):
     description: Mapped[str] = mapped_column(String(128))
 
     sensors = relationship("Sensor", back_populates="measurement_types")
-    outputs = relationship("SensorOutput", back_populates="measurement_types")
+    measurement_names = relationship(
+        "Sensor",
+    )
+    outputs = relationship("SensorOutput", back_populates="measurement_type")
 
     def __repr__(self) -> str:
         return f"MeasurementType(id={self.id!r}, name={self.name!r},\
