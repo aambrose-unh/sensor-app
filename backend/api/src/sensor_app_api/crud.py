@@ -9,7 +9,7 @@ def get_sensor(db: Session, sensor_id: int):
 
 
 def get_sensor_by_name(db: Session, name: str):
-    return db.query(models.Sensor).filter(models.Sensor.name == name).all()
+    return db.query(models.Sensor).filter(models.Sensor.name == name).first()
 
 
 def get_sensors(db: Session, skip: int = 0, limit: int = 100):
@@ -20,11 +20,18 @@ def get_measurement_types(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.MeasurementType).offset(skip).limit(limit).all()
 
 
+def get_measurement_type_by_name(db: Session, name: str):
+    return (
+        db.query(models.MeasurementType)
+        .filter(models.MeasurementType.name == name)
+        .first()
+    )
+
+
 def create_sensor(db: Session, sensor: schemas.SensorCreate):
     db_sensor = models.Sensor(
         name=sensor.name,
         description=sensor.description,
-        measurement_type_id=sensor.measurement_type_id,
     )
     db.add(db_sensor)
     db.commit()
@@ -54,6 +61,19 @@ def get_outputs_by_sensor_id(db: Session, sensor_id: int):
         .filter(models.SensorOutput.sensor_id == sensor_id)
         .all()
     )
+
+
+def create_sensor_measurement_type(
+    db: Session, sensor_measurement_type: schemas.SensorMeasurementType
+):
+    db_sensor_measurement_type = models.SensorMeasurementType(
+        sensor_id=sensor_measurement_type.sensor_id,
+        measurement_type_id=sensor_measurement_type.measurement_type_id,
+    )
+    db.add(db_sensor_measurement_type)
+    db.commit()
+    db.refresh(db_sensor_measurement_type)
+    return db_sensor_measurement_type
 
 
 def get_outputs_by_sensor_name(db: Session, sensor_name: str):

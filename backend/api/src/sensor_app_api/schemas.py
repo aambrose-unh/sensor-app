@@ -28,19 +28,10 @@ class SensorOutput(SensorOutputBase):
 class SensorBase(BaseModel):
     name: str
     description: str
-    measurement_type_id: int
 
 
 class SensorCreate(SensorBase):
     pass
-
-
-class Sensor(SensorBase):
-    id: int
-    outputs: list[SensorOutput] = []
-
-    class Config:
-        orm_mode = True
 
 
 class MeasurementTypeBase(BaseModel):
@@ -52,9 +43,23 @@ class MeasurementTypeCreate(MeasurementTypeBase):
     pass
 
 
+class Sensor(SensorBase):
+    id: int
+    measurement_types: list[MeasurementTypeBase] = []
+    outputs: list[SensorOutput] = []
+
+    class Config:
+        orm_mode = True
+
+
 class MeasurementType(MeasurementTypeBase):
     id: int
     sensors: list[Sensor] = []
 
     class Config:
         orm_mode = True
+
+
+class SensorMeasurementType(BaseModel):
+    sensor_id: int
+    measurement_type_id: int
