@@ -54,8 +54,8 @@ class SensorOutput(Base):
     __tablename__ = "sensor_output"
     id: Mapped[int] = mapped_column(primary_key=True)
     value: Mapped[float] = mapped_column(Double)
-    date_measured: Mapped[datetime.date]
-    hour_measured: Mapped[int]
+    date_measured: Mapped[datetime.datetime]
+    # hour_measured: Mapped[int]
     sensor_id: Mapped[int] = mapped_column(ForeignKey("sensors.id"))
     measurement_type_id: Mapped[int] = mapped_column(ForeignKey("measurement_type.id"))
 
@@ -65,4 +65,4 @@ class SensorOutput(Base):
     def __repr__(self) -> str:
         return f"SensorOutput(id={self.id!r}, sensor_id={self.sensorid!r}, \
                 value={self.value!r}, \
-                date_measured={self.date_measured!r}, hour_measured={self.hour_measured!r})"
+                date_measured={self.date_measured!r})"

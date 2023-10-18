@@ -36,8 +36,7 @@ api_endpoint = os.getenv("API_ENDPOINT", "localhost:8000")
 # TODO - add api key - api_key = os.getenv("API_KEY")
 
 # Set sensor and measurement type info
-temp_sensor_id = 2
-hum_sensor_id = 3
+sensor_id = 1
 temp_measurement_type_id = 1
 hum_measurement_type_id = 2
 
@@ -49,29 +48,29 @@ hum_measurement_type_id = 2
 def saveToDatabase(temperature, humidity):
     logger.info("Saving to database")
 
-    current_date = datetime.datetime.now().date()
+    current_datetime = datetime.datetime.now()
 
-    now = datetime.datetime.now()
-    midnight = datetime.datetime.combine(now.date(), datetime.time())
-    minutes = int(
-        ((now - midnight).seconds) / 60
-    )  # minutes after midnight, use datead$
+    # now = datetime.datetime.now()
+    # # midnight = datetime.datetime.combine(now.date(), datetime.time())
+    # minutes = int(
+    #     ((now - midnight).seconds) / 60
+    # )  # minutes after midnight, use datead$
 
     logger.info("Create SensorOutput instance")
     new_temp_entry = SensorOutputCreate(
-        sensor_id=2,
+        sensor_id=sensor_id,
         value=temperature,
         measurement_type_id=temp_measurement_type_id,
-        date_measured=str(current_date),
-        hour_measured=minutes,
+        date_measured=str(current_datetime),
+        # hour_measured=minutes,
     )
 
     new_humidity_entry = SensorOutputCreate(
-        sensor_id=3,
+        sensor_id=sensor_id,
         value=humidity,
         measurement_type_id=hum_measurement_type_id,
-        date_measured=str(current_date),
-        hour_measured=minutes,
+        date_measured=str(current_datetime),
+        # hour_measured=minutes,
     )
 
     logger.info("Saving temp output to database")

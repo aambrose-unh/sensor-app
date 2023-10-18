@@ -6,11 +6,11 @@ class SensorOutputBase(BaseModel):
     value: float
     sensor_id: int
     measurement_type_id: int
-    date_measured: datetime.date
-    hour_measured: int
+    date_measured: datetime.datetime
+    # hour_measured: int
 
     @field_serializer("date_measured")
-    def serialize_dt(self, date_measured: datetime.date, _info):
+    def serialize_dt(self, date_measured: datetime.datetime, _info):
         return str(date_measured)
 
 
