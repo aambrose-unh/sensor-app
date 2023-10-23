@@ -1,12 +1,17 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 import datetime
 
 
 class SensorOutputBase(BaseModel):
-    temperature: float
-    humidity: float
-    dateMeasured: datetime.date
-    hourMeasured: int
+    value: float
+    sensor_id: int
+    measurement_type_id: int
+    date_measured: datetime.datetime
+    # hour_measured: int
+
+    @field_serializer("date_measured")
+    def serialize_dt(self, date_measured: datetime.datetime, _info):
+        return str(date_measured)
 
 
 class SensorOutputCreate(SensorOutputBase):
@@ -15,7 +20,6 @@ class SensorOutputCreate(SensorOutputBase):
 
 class SensorOutput(SensorOutputBase):
     id: int
-    sensor_id: int
 
     class Config:
         orm_mode = True
@@ -30,9 +34,32 @@ class SensorCreate(SensorBase):
     pass
 
 
+class MeasurementTypeBase(BaseModel):
+    name: str
+    description: str
+
+
+class MeasurementTypeCreate(MeasurementTypeBase):
+    pass
+
+
 class Sensor(SensorBase):
     id: int
+    measurement_types: list[MeasurementTypeBase] = []
     outputs: list[SensorOutput] = []
 
     class Config:
         orm_mode = True
+
+
+class MeasurementType(MeasurementTypeBase):
+    id: int
+    sensors: list[Sensor] = []
+
+    class Config:
+        orm_mode = True
+
+
+class SensorMeasurementType(BaseModel):
+    sensor_id: int
+    measurement_type_id: int
