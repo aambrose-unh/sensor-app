@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sensor-api
-          image: # Replace this with your image's name
+          image: registry.pi.local:5000/sensor-api:latest
           resources:
             limits:
               memory: "128Mi"
@@ -22,6 +22,27 @@ spec:
           ports:
             - containerPort: 8000
           imagePullPolicy: Always
+          env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: DB_USER
+          - name: DB_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: DB_PASSWD
+          - name: DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: DB_PORT
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: DB_NAME
 ---
 apiVersion: v1
 kind: Service
