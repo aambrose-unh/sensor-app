@@ -28,5 +28,5 @@ uvicorn[standard]==0.23.2 ; python_full_version >= "3.10.1" and python_version <
 uvloop==0.17.0 ; (sys_platform != "win32" and sys_platform != "cygwin") and platform_python_implementation != "PyPy" and python_full_version >= "3.10.1" and python_version < "4.0"
 watchfiles==0.20.0 ; python_full_version >= "3.10.1" and python_version < "4.0"
 websockets==11.0.3 ; python_full_version >= "3.10.1" and python_version < "4.0"
-adafruit_dht==1.4.0
+adafruit-circuitpython-dht
 board==1.0

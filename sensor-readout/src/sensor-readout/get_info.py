@@ -1,13 +1,10 @@
-#!/usr/bin/python
+#!/home/aambro/.pyenv/shims/python
 import sys
 import random
 
 # Ok to comment out board / adafruit_dht for testing
-try:
-    import board
-    import adafruit_dht
-except ImportError:
-    print("hardware libraries not found, ok for testing, but install for production")
+import board
+import adafruit_dht
 
 import os
 import time
