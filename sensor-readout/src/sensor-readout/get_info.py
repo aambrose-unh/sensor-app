@@ -41,8 +41,8 @@ temp_measurement_type_id = 1
 hum_measurement_type_id = 2
 
 # # Hardware Info
-# pinNum = board.D4  # if not using pin number 4, change here
-# sensor = adafruit_dht.DHT22(pinNum)
+pinNum = board.D4  # if not using pin number 4, change here
+sensor = adafruit_dht.DHT22(pinNum)
 
 
 def saveToDatabase(temperature, humidity):
@@ -50,19 +50,12 @@ def saveToDatabase(temperature, humidity):
 
     current_datetime = datetime.datetime.now()
 
-    # now = datetime.datetime.now()
-    # # midnight = datetime.datetime.combine(now.date(), datetime.time())
-    # minutes = int(
-    #     ((now - midnight).seconds) / 60
-    # )  # minutes after midnight, use datead$
-
     logger.info("Create SensorOutput instance")
     new_temp_entry = SensorOutputCreate(
         sensor_id=sensor_id,
         value=temperature,
         measurement_type_id=temp_measurement_type_id,
         date_measured=str(current_datetime),
-        # hour_measured=minutes,
     )
 
     new_humidity_entry = SensorOutputCreate(
@@ -70,7 +63,6 @@ def saveToDatabase(temperature, humidity):
         value=humidity,
         measurement_type_id=hum_measurement_type_id,
         date_measured=str(current_datetime),
-        # hour_measured=minutes,
     )
 
     logger.info("Saving temp output to database")
@@ -83,40 +75,40 @@ def saveToDatabase(temperature, humidity):
     logger.info(response.text)
 
 
-# def read_info():
-#     num_retries = 15
-#     while num_retries > 0:
-#         print(f"Number of retries remaining: {num_retries}")
-#         try:
-#             # Print the values to the serial port
-#             temperature_c = sensor.temperature
-#             temperature_f = temperature_c * (9 / 5) + 32
-#             humidity = sensor.humidity
-#             print(
-#                 "Temp: {:.1f} F / {:.1f} C    Humidity: {}% ".format(
-#                     temperature_f, temperature_c, humidity
-#                 )
-#             )
-#             break  # do not repeat if successful
+def read_info():
+    num_retries = 15
+    while num_retries > 0:
+        print(f"Number of retries remaining: {num_retries}")
+        try:
+            # Print the values to the serial port
+            temperature_c = sensor.temperature
+            temperature_f = temperature_c * (9 / 5) + 32
+            humidity = sensor.humidity
+            print(
+                "Temp: {:.1f} F / {:.1f} C    Humidity: {}% ".format(
+                    temperature_f, temperature_c, humidity
+                )
+            )
+            break  # do not repeat if successful
 
-#         except RuntimeError as error:
-#             # Errors happen fairly often, DHT's are hard to read, just keep going
-#             print(error.args[0])
-#             time.sleep(2.0)
-#             num_retries -= 1
+        except RuntimeError as error:
+            # Errors happen fairly often, DHT's are hard to read, just keep going
+            print(error.args[0])
+            time.sleep(2.0)
+            num_retries -= 1
 
-#         except Exception as error:
-#             sensor.exit()
-#             raise error
+        except Exception as error:
+            sensor.exit()
+            raise error
 
-#     print("Temperature: %.1f F" % temperature_f)
-#     print("Humidity:    %s %%" % humidity)
+    print("Temperature: %.1f F" % temperature_f)
+    print("Humidity:    %s %%" % humidity)
 
-#     if humidity is not None and temperature_f is not None:
-#         return saveToDatabase(temperature_f, humidity)  # success, save the readings
-#     else:
-#         print("Failed to get reading. Try again!")
-#         sys.exit(1)
+    if humidity is not None and temperature_f is not None:
+        return saveToDatabase(temperature_f, humidity)  # success, save the readings
+    else:
+        print("Failed to get reading. Try again!")
+        sys.exit(1)
 
 
 def test_read_info(num_data_points=10):
@@ -131,5 +123,5 @@ def test_read_info(num_data_points=10):
 
 
 if __name__ == "__main__":
-    # read_info()  # get the readings
-    test_read_info()
+    read_info()  # get the readings
+    # test_read_info()
