@@ -1,3 +1,6 @@
+Much of this inspired by and pulled from https://github.com/peterkodermac/Raspberry-Weather
+
+
 # Raspberry Weather DHT22 
 
 ## Introduction
